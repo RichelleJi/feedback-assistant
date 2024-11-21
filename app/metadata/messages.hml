@@ -1,0 +1,188 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: messages
+  fields:
+    - name: backend_id
+      type: text!
+    - name: chat_id
+      type: text!
+    - name: created_at
+      type: timestamptz!
+    - name: frontend_id
+      type: text!
+    - name: id
+      type: int8!
+    - name: message
+      type: text!
+    - name: sender
+      type: sender!
+    - name: source
+      type: text
+    - name: status
+      type: int4
+    - name: user_id
+      type: text!
+  graphql:
+    typeName: messages
+    inputTypeName: messages_input
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: messages
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: messages
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - backend_id
+          - chat_id
+          - created_at
+          - frontend_id
+          - id
+          - message
+          - sender
+          - source
+          - status
+          - user_id
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: messages_bool_exp
+  operand:
+    object:
+      type: messages
+      comparableFields:
+        - fieldName: backend_id
+          booleanExpressionType: text_bool_exp
+        - fieldName: chat_id
+          booleanExpressionType: text_bool_exp
+        - fieldName: created_at
+          booleanExpressionType: timestamptz_bool_exp
+        - fieldName: frontend_id
+          booleanExpressionType: text_bool_exp
+        - fieldName: id
+          booleanExpressionType: int8_bool_exp
+        - fieldName: message
+          booleanExpressionType: text_bool_exp
+        - fieldName: sender
+          booleanExpressionType: sender_bool_exp
+        - fieldName: source
+          booleanExpressionType: text_bool_exp
+        - fieldName: status
+          booleanExpressionType: int4_bool_exp
+        - fieldName: user_id
+          booleanExpressionType: text_bool_exp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: messages_bool_exp
+
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: messages_agg_exp
+  operand:
+    object:
+      aggregatedType: messages
+      aggregatableFields:
+        - fieldName: backend_id
+          aggregateExpression: text_agg_exp
+        - fieldName: chat_id
+          aggregateExpression: text_agg_exp
+        - fieldName: created_at
+          aggregateExpression: timestamptz_agg_exp
+        - fieldName: frontend_id
+          aggregateExpression: text_agg_exp
+        - fieldName: id
+          aggregateExpression: int8_agg_exp
+        - fieldName: message
+          aggregateExpression: text_agg_exp
+        - fieldName: sender
+          aggregateExpression: sender_agg_exp
+        - fieldName: source
+          aggregateExpression: text_agg_exp
+        - fieldName: status
+          aggregateExpression: int4_agg_exp
+        - fieldName: user_id
+          aggregateExpression: text_agg_exp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: messages_agg_exp
+
+---
+kind: Model
+version: v1
+definition:
+  name: messages
+  objectType: messages
+  source:
+    dataConnectorName: my_pg
+    collection: messages
+  filterExpressionType: messages_bool_exp
+  aggregateExpression: messages_agg_exp
+  orderableFields:
+    - fieldName: backend_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: chat_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: created_at
+      orderByDirections:
+        enableAll: true
+    - fieldName: frontend_id
+      orderByDirections:
+        enableAll: true
+    - fieldName: id
+      orderByDirections:
+        enableAll: true
+    - fieldName: message
+      orderByDirections:
+        enableAll: true
+    - fieldName: sender
+      orderByDirections:
+        enableAll: true
+    - fieldName: source
+      orderByDirections:
+        enableAll: true
+    - fieldName: status
+      orderByDirections:
+        enableAll: true
+    - fieldName: user_id
+      orderByDirections:
+        enableAll: true
+  graphql:
+    selectMany:
+      queryRootField: messages
+    selectUniques:
+      - queryRootField: messages_by_id
+        uniqueIdentifier:
+          - id
+    orderByExpressionType: messages_order_by
+    filterInputTypeName: messages_filter_input
+    aggregate:
+      queryRootField: messages_aggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: messages
+  permissions:
+    - role: admin
+      select:
+        filter: null
+
