@@ -12,6 +12,7 @@ This feedback assistant enables engineers to interact directly with the messages
    ```bash
    OPENAI_API_KEY=
    APP_MY_PG_CONNECTION_URI=
+   ```
    
 3.  Start the assistant
    ```bash
